@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import nice.models.User;
 import nice.models.UserDao;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -14,8 +16,8 @@ public class UserService {
     private UserDao userDao;
 
 	@Transactional
-    public Iterable<User> findAll() {
-    	return userDao.findAll();
+    public List<User> findAll() {
+    	return (List<User>) userDao.findAll();
     }
 
     @Transactional
@@ -50,6 +52,18 @@ public class UserService {
             return userDao.save(user);
         } catch (Exception e) {
             return null;
+        }
+	}
+	
+	@Transactional
+	public void deleteUser(Long id) {
+		try {
+			User user = userDao.findOne(id);
+			if(user != null) {
+				userDao.delete(id);
+			}
+		} catch (Exception e) {
+            e.printStackTrace();
         }
 	}
 }

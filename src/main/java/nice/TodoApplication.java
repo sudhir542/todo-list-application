@@ -13,7 +13,7 @@ import nice.models.User;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-public class Application {
+public class TodoApplication {
 
 	@Bean
 	CommandLineRunner init(UserDao userDao) {
@@ -25,6 +25,6 @@ public class Application {
 	}
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(TodoApplication.class);
     } 
 }
