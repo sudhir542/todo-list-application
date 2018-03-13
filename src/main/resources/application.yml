@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:todo;DATABASE_TO_UPPER=false;db_close_on_exit=false
+    driver-class-name: org.h2.Driver
+    username: nice
+    password: nice
+    platform: h2
+  h2:
+    console:
+      enabled: true
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+ 
+logging:
+  level:
+    ROOT: info
+
