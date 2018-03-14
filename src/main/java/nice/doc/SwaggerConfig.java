@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * There are 2 jars that were included along with this configuration
  * Swagger is mainly used for documentation of the API's
  * After running the application you can find all api calls 
- * at http://localhost:8088/swagger-ui.html#/orders
+ * at http://localhost:8088/swagger-ui.html
  */
 
 @Configuration
