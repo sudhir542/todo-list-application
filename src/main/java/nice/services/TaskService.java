@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.domain.Specifications;
 
 import nice.models.Task;
 import nice.models.TaskDao;
@@ -88,6 +89,17 @@ public class TaskService {
 			}
 		} catch (Exception e) {
             e.printStackTrace();
+        }
+	}
+	
+	@Transactional
+	public List<Task> listTaskBySpecification(Specifications<Task> result) {
+		try {
+			List<Task> tasks = taskDao.findAll(result);
+			return tasks;
+		} catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 	}
 }
