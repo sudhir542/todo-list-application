@@ -103,7 +103,7 @@ public class TasksController extends AbstractRestHandler{
     				taskService.deleteTask(id);
     			}
     			else {
-    				throw new ResourceNotFoundException("No user id found to delete.");
+    				checkResourceFound(task);
     			}
     		}
 		else {
@@ -143,7 +143,7 @@ public class TasksController extends AbstractRestHandler{
         List<Task> taskResults = taskService.listTaskBySpecification(result);
 
         if (taskResults == null || taskResults.isEmpty()) {
-        		throw new ResourceNotFoundException("Resource not found.");
+        		checkResourceFound(taskResults);
         }
 
         return ok(taskResults);
