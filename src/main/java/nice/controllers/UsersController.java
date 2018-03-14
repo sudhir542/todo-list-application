@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import nice.exceptions.ResourceNotFoundException;
 import nice.exceptions.DataFormatException;
 
@@ -25,6 +28,7 @@ import nice.services.UserService;
 @Controller
 @EnableAutoConfiguration
 @RequestMapping("/users")
+@Api(tags = {"users"})
 public class UsersController extends AbstractRestHandler{
 
     @Autowired
@@ -35,6 +39,7 @@ public class UsersController extends AbstractRestHandler{
             produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
+    @ApiOperation(value = "List all users", notes = "This endpoint is used to list all of the users.")
     public ResponseEntity<List<User>> getAllUsers() {
         return ok(userService.findAll());
     }
@@ -44,7 +49,8 @@ public class UsersController extends AbstractRestHandler{
             produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<User> getUserByIdOrUserName(@PathVariable("id") String idOrUserName) {
+    @ApiOperation(value = "Get a specific user", notes = "This endpoint is used to get a specific user.")
+    public ResponseEntity<User> getUserByIdOrUserName(@ApiParam(value="Id or Username required to update", required=true) @PathVariable("id") String idOrUserName) {
     		User user = userService.findByIdOrUserName(idOrUserName);
 		checkResourceFound(user);//this check will make sure if the resource exists otherwise if will
 		//return message and cause in 404
@@ -57,7 +63,8 @@ public class UsersController extends AbstractRestHandler{
 			produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest request) {
+    @ApiOperation(value = "Create a user", notes = "This endpoint is used to create a new user.")
+    public ResponseEntity<User> createUser(@ApiParam(value="User request object needed to create a new user mostly username", required=true) @RequestBody CreateUserRequest request) {
         return ok(userService.createUser(request.getUserName()));
     }
 
@@ -67,7 +74,8 @@ public class UsersController extends AbstractRestHandler{
 			produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody CreateUserRequest request) {
+    @ApiOperation(value = "Update a user", notes = "This endpoint is used to update a user.")
+    public ResponseEntity<User> updateUser(@ApiParam(value="User request needed to update user only username", required=false) @PathVariable("id") Long id, @RequestBody CreateUserRequest request) {
     		if (id != null) {
     			User user = userService.findByIdOrUserName(id.toString());
     			checkResourceFound(user);//this check will make sure if the resource exists otherwise if will
@@ -83,7 +91,8 @@ public class UsersController extends AbstractRestHandler{
 			produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteUser(@PathVariable("id") Long id) {
+    @ApiOperation(value = "Delete a user", notes = "This endpoint is used to delete a user.")
+    public void deleteUser(@ApiParam(value="Id of the user", required=true) @PathVariable("id") Long id) {
     		if(id != null) {
     			User user = userService.findByIdOrUserName(id.toString());
     			if(user != null) {

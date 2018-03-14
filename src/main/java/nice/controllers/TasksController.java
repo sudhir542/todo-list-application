@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import nice.util.SearchCriteria;
 import nice.specification.TaskSpecification;
 
@@ -36,6 +39,7 @@ import nice.services.TaskService;
 @Controller
 @EnableAutoConfiguration
 @RequestMapping("/tasks")
+@Api(tags = {"tasks"})
 public class TasksController extends AbstractRestHandler{
 	
 	@Autowired
@@ -46,6 +50,10 @@ public class TasksController extends AbstractRestHandler{
             produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
+    @ApiOperation(value = "List all tasks and also search on task parameters", notes = "This endpoint is used to list all of the tasks "
+    		+ "http://localhost:8080/tasks and one can search based on task parameters too like " 
+    		+ "for example " 
+    		+ "http://localhost:8080/tasks?search=status:completed or ?search=userId:1")
     public ResponseEntity<List<Task>> getAllTasks() {
         return ok(taskService.findAll());
     }
@@ -56,7 +64,8 @@ public class TasksController extends AbstractRestHandler{
             produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id) {
+    @ApiOperation(value = "Get a task details", notes = "This endpoint is used to get information about specific task.")
+    public ResponseEntity<Task> getTaskById(@ApiParam(value="Id of the task", required=true) @PathVariable("id") Long id) {
     		Task task = taskService.findById(id);
 		checkResourceFound(task);//this check will make sure if the resource exists otherwise if will
 		//return message and cause in 404
@@ -69,7 +78,8 @@ public class TasksController extends AbstractRestHandler{
 			produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Task> createTask(@RequestBody TaskRequest request) {
+    @ApiOperation(value = "Create a task", notes = "This endpoint is used to create a new task. Desc is an optional field.")
+    public ResponseEntity<Task> createTask(@ApiParam(value="Request body with name, desc(optional), status, user", required=true) @RequestBody TaskRequest request) {
         return ok(taskService.createTask(request.getName(), request.getDesc(), request.getStatus(), request.getUser().getId()));
     }
 
@@ -80,7 +90,8 @@ public class TasksController extends AbstractRestHandler{
 			produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskRequest request) {
+    @ApiOperation(value = "Update a task", notes = "This endpoint is used to update an existing task. All the parameters are optional.")
+    public ResponseEntity<Task> updateTask(@ApiParam(value="Id of the task", required=true) @PathVariable("id") Long id, @ApiParam(value="Request body with name, desc(optional), status, user", required=false) @RequestBody TaskRequest request) {
     		if (id != null) {
     			Task task = taskService.findById(id);
     			checkResourceFound(task);//this check will make sure if the resource exists otherwise if will
@@ -88,7 +99,7 @@ public class TasksController extends AbstractRestHandler{
     			return ok(taskService.updateTask(id, request.getName(), request.getDesc(), request.getStatus(), request.getUser().getId()));
     		}
     		else 
-    			throw new DataFormatException("User id for updating a user name cannot be null");
+    			throw new DataFormatException("Task id for updating a task information cannot be null.");
     }
     
     @RequestMapping(value = "/{id}",
@@ -96,7 +107,8 @@ public class TasksController extends AbstractRestHandler{
 			produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteTask(@PathVariable("id") Long id) {
+    @ApiOperation(value = "Delete a task", notes = "This endpoint is used to delete an existing task.")
+    public void deleteTask(@ApiParam(value="Id of the task", required=true) @PathVariable("id") Long id) {
     		if(id != null) {
     			Task task = taskService.findById(id);
     			if(task != null) {
@@ -107,7 +119,7 @@ public class TasksController extends AbstractRestHandler{
     			}
     		}
 		else {
-			throw new DataFormatException("User id for deleting a user cannot be null");
+			throw new DataFormatException("Task id for deleting a task cannot be null.");
 		}
     	}
     
