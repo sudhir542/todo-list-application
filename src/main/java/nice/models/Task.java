@@ -19,17 +19,19 @@ public class Task {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     
-    @Column(nullable = false, length = 30)
+    	@Column(nullable = false, length = 30)
     private String name;
     
+    	@Column
     private String desc;
     
+    	@Column
     private String status;
    
     @ManyToOne(fetch = EAGER)
     private User user;
 
-    protected Task() {}
+    public Task() {}
 
     public Task(String name, String desc, String status, User user) {
         this.name = name;
@@ -44,6 +46,14 @@ public class Task {
                 "Task[id=%d, name='%s', desc='%s', status='%s', user='%s']",
                 id, name, desc, status, user.getUserName());
     }
+    
+    public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
     
     public String getName() {
 		return name;

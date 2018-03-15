@@ -3,10 +3,19 @@ package nice.controllers;
 import nice.controllers.CreateUserRequest;
 
 public class TaskRequest {
+	private String id;
 	private String name;
 	private String desc;
 	private String status;
 	private CreateUserRequest user;//user will be used to send used.id during PUT,POST 
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 	public void setUser(CreateUserRequest user) {
 		this.user = user;
