@@ -3,6 +3,11 @@ package nice.controllers;
 import nice.controllers.TaskRequest;
 import java.util.List;
 
+/* 
+ * Request Body to capture the request for TodoList 
+ * 
+ */
+
 public class TodoListRequest {
 	private String name;
 	private List<TaskRequest> tasks;//task id can be a part of the todo List

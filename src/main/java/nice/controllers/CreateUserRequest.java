@@ -1,4 +1,8 @@
 package nice.controllers;
+/* 
+ * Request Body to capture the request for Users 
+ * 
+ */
 
 public class CreateUserRequest {
 	

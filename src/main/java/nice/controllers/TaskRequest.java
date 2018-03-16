@@ -2,6 +2,11 @@ package nice.controllers;
 
 import nice.controllers.CreateUserRequest;
 
+/* 
+ * Request Body to capture the request for Task 
+ * 
+ */
+
 public class TaskRequest {
 	private String id;
 	private String name;

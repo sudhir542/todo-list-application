@@ -1,62 +1,213 @@
-ToDo List Application
-=====================
+## How to Run 
 
-This is a starter project for Java developer candidate testing.
+This application is packaged as a jar which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary. You run it using the ```java -jar``` command.
 
-Overview
---------
+* Clone this repository 
+* Make sure you are using JDK 1.8 and Maven 3.x
+* You can build the project and run the tests by running ```mvn clean package```
+* Once successfully built, you can run the service by one of these two methods:
+```
+        java -jar -Dspring.profiles.active=test todo-list-app-0.1.0.jar
+or
+        mvn spring-boot:run -Drun.arguments="spring.profiles.active=test"
+```
+* Check the stdout to make sure no exceptions are thrown
 
-This is a web application with REST endpoints for managing a todo list (a list of tasks assigned to users). The application is set up to use Maven, Spring Boot, Hibernate, and an embedded H2 database.
+Once the application runs you should see something like this
 
-Your job is to finish the application according to the user stories defined below. Please test your solution as you think best. Please ask as many questions as you think is necessary.
+```
+2018-03-16 04:13:32.667  INFO 4644 --- [           main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2018-03-16 04:13:33.560  INFO 4644 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2018-03-16 04:13:33.583  INFO 4644 --- [           main] nice.TodoApplication                     : Started TodoApplication in 20.851 seconds (JVM running for 22.114)
+```
 
-Prerequisites
--------------
+## About the Service
 
-* Install Git
-* Install Maven
-* Install an IDE or editor of your choice
+The service is just a simple Todo Application REST services. It uses an in-memory database (H2) to store the data. You can also do with a relational database like MySQL or PostgreSQL. If your database connection properties work, you can call some REST endpoints defined in ```nice.controllers``` on **port 8080**. (see below)
+ 
+Here is what this little application demonstrates: 
 
-User Stories
-------------
+* Full integration with the latest **Spring** Framework: inversion of control, dependency injection, etc.
+* Packaging as a single jar with embedded container (tomcat 8): No need to install a container separately on the host just run using the ``java -jar`` command
+* Writing a RESTful service using annotation: supports only JSON response; 
+* Exception mapping from application exceptions to the right HTTP response with exception details in the body
+* *Spring Data* Integration with JPA/Hibernate with just a few lines of configuration and familiar annotations. 
+* Automatic CRUD functionality against the data source using Spring 
+* Demonstrates MockMVC test framework with associated libraries
+* All APIs are "self-documented" by Swagger2 using annotations 
 
-The user of your application, the "todo list manager", is responsible for creating users, creating tasks, assigning tasks to users, and setting task statuses using a collection of REST endpoints. The todo list manager expects all REST endpoints to return data in JSON format.
+Here are some endpoints you can call:
 
-1. As a todo list manager, I need a REST endpoint to create new users.
-2. As a todo list manager, I need a REST endpoint to change an existing user's user name.
-3. As a todo list manager, I need a REST endpoint to delete a user.
-4. As a todo list manager, I need a REST endpoint to list all of the users.
-5. As a todo list manager, I need a REST endpoint to create a new task. Tasks have a name, description, status, and assigned user. Task statuses should include "Not Started", "In Progress", and "Complete".
-6. As a todo list manager, I need a REST endpoint to update a task.
-7. As a todo list manager, I need a REST endpoint to list all tasks along with their assigned users.
-8. As a todo list manager, I need a REST endpoint to list all completed tasks along with their assigned users.
-9. As a todo list manager, I need a REST endpoint to list all tasks that are not completed along with their assigned users.
-10. As a todo list manager, I need a REST endpoint to list all tasks that are in progress along with their assigned users.
-11. As a todo list manager, I need a REST endpoint to list all tasks that are not started along with their assigned users.
+## Users Related Services
+### Retrieve a list of users
 
-Bonus Stories
--------------
+```
+GET
+http://localhost:8080/users
 
-The following user stories are considered to be bonus functionality and are not strictly required.
+Response: HTTP 200
+```
 
-1. As a todo list manager, I need to be able to create multiple separate todo lists. A todo list should have multiple tasks, tasks can belong to multiple todo lists, and tasks are still assigned to a single user.
-2. As a todo list manager, I need a REST endpoint to list all tasks for a particular todo list.
-3. As a todo list manager, I need a REST endpoint to list all tasks grouped by todo list.
-4. As a todo list manager, I need a REST endpoint to delete todo lists.
+### Retrieve a specific user resource
 
-Evaluation Criteria
--------------------
+```
+GET
+http://localhost:8080/users/{userId}
 
-* Correctness
-* Knowledge of Java and relevant libraries and frameworks
-* Coding style / readability
-* Testing approach
-* Git usage (small, logically distinct commits with meaningful commit messages)
+Response: HTTP 200
+```
 
-Getting Started
----------------
+### Create a new user
 
-* To build the project, run `mvn package`.
-* To run the application, use the provided `startup.sh` script or run the project's jar file directly. The server will start on localhost on port 8080.
-* The embedded H2 database will be automatically configured based on your entities when the application starts up.
-* Feel free to make any modifications to the existing code that you see fit so long as you continue to use Maven, Spring Boot, and Hibernate.
+```
+POST
+http://localhost:8080/users
+request body:
+
+Response: HTTP 200
+```
+### Update a user
+
+```
+PUT
+http://localhost:8080/users/{userId}
+request body:
+
+Response: HTTP 200
+```
+
+### Delete a user
+
+```
+http://localhost:8080/users/{userId}
+Response: HTTP 200
+```
+
+
+## Tasks Related Services
+### Retrieve a list of tasks
+
+```
+GET
+http://localhost:8080/tasks
+
+Response: HTTP 200
+```
+
+### Retrieve a specific task resource
+
+```
+GET
+http://localhost:8080/tasks/{taskId}
+
+Response: HTTP 200
+```
+
+### Create a new task
+
+```
+POST
+http://localhost:8080/tasks
+Request body;
+Response: HTTP 200
+```
+
+### Update a task
+
+```
+PUT
+http://localhost:8080/tasks/{taskId}
+Request body:
+Response: HTTP 200
+```
+
+### Delete a task
+
+```
+DELETE
+http://localhost:8080/tasks/{taskId}
+Response: HTTP 200
+```
+
+
+### Retrieve Tasks a based on search=status
+This search condition will get the tasks whose status has 'not started' or 'completed' or 'in progress'
+
+```
+GET
+http://localhost:8080/tasks?search=status:not started
+Response: HTTP 200
+             or
+GET
+http://localhost:8080/tasks?search=status:in progress
+Response: HTTP 200
+             or
+GET
+http://localhost:8080/tasks?search=status:completed
+Response: HTTP 200
+```
+
+## TodoList Related Services
+### Retrieve a list of todolists
+```
+GET
+http://localhost:8080/todolists
+
+Response: HTTP 200
+```
+
+### Retrieve a specific todolist
+```
+GET
+http://localhost:8080/todolists/{todolistId}
+
+Response: HTTP 200
+```
+
+### Retrieve tasks for a todolist
+```
+GET
+http://localhost:8080/todolists/{todolistId}/tasks
+
+Response: HTTP 200
+```
+
+### Create one or multiple todolists
+```
+POST
+http://localhost:8080/todolists
+Request body
+Response: HTTP 200
+```
+
+### Delete a todolist
+```
+DELETE
+http://localhost:8080/todolists/{todolistId}
+Request body
+Response: HTTP 200
+```
+
+
+
+### To disable information logging and have only error logging since we do not want to hit the production servers with information logs. 
+Please make the below changes on application.yml file
+
+```
+logging:
+  level:
+    ROOT: ERROR
+```
+
+### To view Swagger 2 API docs
+
+Run the server and browse to localhost:8080/swagger-ui.html
+
+### To view your H2 in-memory datbase
+
+The 'todo' profile runs on H2 in-memory database. To view and query the database you can browse to http://localhost:8080/h2-console (username is 'nice' with password as 'nice'). Make sure you disable this in your production profiles. 
+
+
+
+
+

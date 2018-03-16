@@ -32,7 +32,7 @@ import nice.services.TodoListService;
 import nice.models.Task;
 
 /*
- * Demonstrates how to set up RESTful API endpoints for /users
+ * Demonstrates how to set up RESTful API endpoints for /todoLists
  */
 
 @Controller
