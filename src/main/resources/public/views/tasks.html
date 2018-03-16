@@ -1,0 +1,67 @@
+<div class="container">
+
+		<!-- TITLE -->
+   	<h1><span class="glyphicon glyphicon-time"></span> All tasks</h1>
+   	
+   		<!-- LIVE SEARCH -->
+	<div class="col-xs-4">
+		<div class="input-group">
+    		<input type="text" class="form-control" ng-model="searchText"/>
+    		<span class="input-group-addon">
+        		<i class="glyphicon glyphicon-search"></i>
+    		</span>
+    	</div>	
+    </div>
+    
+   		<!-- PENDING TASKS LIST -->
+	<table class="table table-hover">
+    	<thead>
+      		<tr>
+        		<th class="text-info"><h4>Task Name</h4></th>
+        		<th class="text-info"><h4>Desc</h4></th>
+        		<th class="text-info"><h4>Assigned User</h4></th>
+        		<th class="text-info"><h4>Status</h4></th>
+        		<th width="150"class="text-info"><h4>Action</h4></th>
+      		</tr>
+    	</thead>
+    	<tbody ng-controller="TasksActionsController">
+      		<tr ng-repeat="task in tasks | filter:searchText | orderBy:'-status'" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+        		<td>{{task.name}}</td>
+        		<td>{{task.desc}}</td>
+        		<td>{{task.user.userName}}</td>
+        		<td>{{task.status}}</td>
+        		<td>
+        			<a ng-href='' ng-click='checkTask(task.id)'>
+        				<span ng-show="Icon" class="glyphicon glyphicon-ok" style='font-size: 17px'></span>
+        			</a> &nbsp;
+        			<a href='#/editTask{{task.id}}'>
+        				<span ng-show="Icon" class="glyphicon glyphicon-pencil" style='font-size: 17px'></span>
+        			</a> &nbsp;
+        			<a ng-href='' ng-click='deleteTask(task.id)'>
+        				<span ng-show="Icon" class="glyphicon glyphicon-trash" style='font-size: 17px'></span>
+        			</a>
+        		</td>
+      		</tr>     		
+   		</tbody>
+  	</table>
+  	
+  		<!-- LOWER BUTTONS -->
+  		
+  	<a href="#/addTask">
+		<button type=button class="btn btn-primary" >
+			<span class="glyphicon glyphicon-plus" ></span>
+		</button> 
+	</a>
+	
+  	<a href="#/completedTasks">
+		<button type=button class="btn btn-primary" >
+			<span class="glyphicon glyphicon-list-alt" ></span>
+		</button> 
+	</a>
+	
+ 	<a href="#/users">
+		<button type=button class="btn btn-primary" >
+			<span class="glyphicon glyphicon-list-alt" ></span>
+		</button> 
+	</a>
+</div>

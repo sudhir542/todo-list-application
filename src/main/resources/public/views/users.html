@@ -1,0 +1,48 @@
+<div class="container">
+
+		<!-- TITLE -->
+   	<h1><span class="glyphicon glyphicon-time"></span> Users </h1>
+   	
+   		<!-- LIVE SEARCH -->
+	<div class="col-xs-4">
+		<div class="input-group">
+    		<input type="text" class="form-control" ng-model="searchText"/>
+    		<span class="input-group-addon">
+        		<i class="glyphicon glyphicon-search"></i>
+    		</span>
+    	</div>	
+    </div>
+    
+   		<!-- USERS LIST -->
+	<table class="table table-hover">
+    	<thead>
+      		<tr>
+        		<th class="text-info"><h4>User Name</h4></th>
+        		</tr>
+    	</thead>
+    	<tbody ng-controller="UsersActionsController">
+      		<tr ng-repeat="user in users" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+        		<td>{{user.userName}}</td>
+        		<td>
+        			<a ng-href='' ng-click='checkUser(user.id)'>
+        				<span ng-show="Icon" class="glyphicon glyphicon-ok" style='font-size: 17px'></span>
+        			</a> &nbsp;
+        			<a href='#/editUser{{user.id}}'>
+        				<span ng-show="Icon" class="glyphicon glyphicon-pencil" style='font-size: 17px'></span>
+        			</a> &nbsp;
+        			<a ng-href='' ng-click='deleteUser(user.id)'>
+        				<span ng-show="Icon" class="glyphicon glyphicon-trash" style='font-size: 17px'></span>
+        			</a>
+        		</td>
+      		</tr>     		
+   		</tbody>
+  	</table>
+  	
+  		<!-- LOWER BUTTONS -->
+  		
+  	<a href="#/addUser">
+		<button type=button class="btn btn-primary" >
+			<span class="glyphicon glyphicon-plus" ></span>
+		</button> 
+	</a>
+</div>

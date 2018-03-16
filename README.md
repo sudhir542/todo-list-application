@@ -208,6 +208,38 @@ Run the server and browse to localhost:8080/swagger-ui.html
 The 'todo' profile runs on H2 in-memory database. To view and query the database you can browse to http://localhost:8080/h2-console (username is 'nice' with password as 'nice'). Make sure you disable this in your production profiles. 
 
 
+### To view Angular UI for some the above stores 
+Run the server and browse to http://localhost:8080/index.html
+
+You will see all the tasks that are created in the in-memory H2 database using data.sql file
+
+You can also perform search on all of these tasks on different field like you can search for 'completed' it will give you only the tasks that are in status of completed or you can search for 'John Deo' where it returns only the tasks that are assigned to user 'John Deo'
+
+Like wise you can perform some of the actions on these tasks. 
+
+You can **Delete** a task **NOTE the task should not be tied to any of the other TodoLists** if you are deleting a task that is associated with a todolist that will give referential integrity at the backend so have to better handle these cases which I have not done for now. But we can delete a task that is not associated with any todolist(i.e. independent task record one way is to create a new task and then delete it).
+
+You can **Create/Add** a new task by using giving it a name, desc, assigned user [choose from the list for safety, I have only allowed users to pick from the list of users which we already loaded using data.sql], status [also predefined list of status like 'In Progress', 'Not Started', 'Completed']. The page will redirect to all tasks and you can see your new task created.
+
+```
+http://localhost:8080/index.html#/addTask
+```
+
+You can **Edit/Modify** an existing task by clicking on the respective row action of the task. The modifiable fields are name, desc, assigned user, status. Once you click save it will redirect you back to all tasks page where you can see your new modified task. 
+
+```
+http://localhost:8080/index.html#/editTask2
+```
+
+You can also **View Completed Tasks** in a single view. At the bottom of the page you can see this option and once you click it will show you only the tasks that are completed and you can perform an action ** 'DELETE' ** on them. 
+
+```
+http://localhost:8080/index.html#/completedTasks
+```
+
+Started to implement the **List Users** feature but due the limited time and knowledge that I have in Angular JS **it couldn't completed**.  
+  
+
 
 
 
