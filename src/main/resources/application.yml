@@ -15,6 +15,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: true
+  profiles: test
  
 logging:
   level:

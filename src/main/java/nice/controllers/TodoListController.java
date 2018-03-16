@@ -3,6 +3,10 @@ package nice.controllers;
 import static org.springframework.http.ResponseEntity.ok;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,9 +87,13 @@ public class TodoListController extends AbstractRestHandler{
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @ApiOperation(value = "Create a TodoList", notes = "This endpoint is used to create a new TodoList.")
-    public ResponseEntity<TodoList> createTodoList(@ApiParam(value="TodoList request object needed to create a new TodoList", required=true) @RequestBody TodoListRequest request) {
+    public ResponseEntity<TodoList> createTodoList(@ApiParam(value="TodoList request object needed to create a new TodoList", required=true) @RequestBody TodoListRequest request, 
+            HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
         List<Task> tasks = getListOfTasks(request.getTasks());
-    		return ok(todoListService.createTodoList(request.getName(), tasks));
+        TodoList todoList = todoListService.createTodoList(request.getName(), tasks);
+        //setting the response header so that we can run our test cases.
+        responseHttp.setHeader("Location", requestHttp.getRequestURL().append("/").append(todoList.getId()).toString());
+    		return ok(todoList);
     }
     
     

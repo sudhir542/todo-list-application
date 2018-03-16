@@ -18,6 +18,9 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import nice.models.User;
 import nice.services.UserService;
 
@@ -64,8 +67,11 @@ public class UsersController extends AbstractRestHandler{
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @ApiOperation(value = "Create a user", notes = "This endpoint is used to create a new user.")
-    public ResponseEntity<User> createUser(@ApiParam(value="User request object needed to create a new user mostly username", required=true) @RequestBody CreateUserRequest request) {
-        return ok(userService.createUser(request.getUserName()));
+    public ResponseEntity<User> createUser(@ApiParam(value="User request object needed to create a new user mostly username", required=true) @RequestBody CreateUserRequest request, 
+    HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
+    		User user = userService.createUser(request.getUserName());
+    		responseHttp.setHeader("Location", requestHttp.getRequestURL().append("/").append(user.getId()).toString());
+    		return ok(user);
     }
 
     @RequestMapping(value = "/{id}",

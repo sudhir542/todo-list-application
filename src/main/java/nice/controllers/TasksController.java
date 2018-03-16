@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.jpa.domain.Specifications;
@@ -79,8 +82,12 @@ public class TasksController extends AbstractRestHandler{
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @ApiOperation(value = "Create a task", notes = "This endpoint is used to create a new task. Desc is an optional field.")
-    public ResponseEntity<Task> createTask(@ApiParam(value="Request body with name, desc(optional), status, user", required=true) @RequestBody TaskRequest request) {
-        return ok(taskService.createTask(request.getName(), request.getDesc(), request.getStatus(), request.getUser().getId()));
+    public ResponseEntity<Task> createTask(@ApiParam(value="Request body with name, desc(optional), status, user", required=true) @RequestBody TaskRequest request, 
+            HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
+    		Task task = taskService.createTask(request.getName(), request.getDesc(), request.getStatus(), request.getUser().getId());
+    		//setting the response header so that we can run our test cases.
+    		responseHttp.setHeader("Location", requestHttp.getRequestURL().append("/").append(task.getId()).toString());
+        return ok(task);
     }
 
     //Not need as per the requirement but still implemented.

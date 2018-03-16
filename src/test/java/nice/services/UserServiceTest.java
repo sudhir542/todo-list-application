@@ -1,69 +1,106 @@
 package nice.services;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
+import nice.TodoApplication;
+import nice.controllers.UsersController;
 import nice.models.User;
-import nice.models.UserDao;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.Assert.*;
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = TodoApplication.class)
+@ActiveProfiles("test")
 public class UserServiceTest {
 
-	@Mock
-	private UserDao userDao;
+    @InjectMocks
+    UsersController controller;
 
-	@InjectMocks
-	private UserService userService = new UserService();
+    @Autowired
+    WebApplicationContext context;
 
-	private long testUserId = 1l;
-	private String testUserName = "testUserName1";
-	private User testUser;
+    private MockMvc mvc;
+    
+    UtilServiceForTests util = new UtilServiceForTests();
 
-	@Before
-	public void setup() {
-		MockitoAnnotations.initMocks(this);
-		testUser = new User(testUserName);
-		testUser.setId(testUserId);
-	}
+    @Before
+    public void initTests() {
+        MockitoAnnotations.initMocks(this);
+        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+    }
 
-	@Test
-	public void exampleTest() {
-		assertEquals(1, 1);
-	}
+    //@Test
+    public void shouldHaveSomeDB() throws Exception {//based on
+        //data.sql that we have injected along with this 
+    		mvc.perform(get("/users")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(5)));
+    }
 
-	@Test
-	public void createUserTest() {
-		Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(testUser);
+    @Test
+    public void shouldCreateRetrieveDelete() throws Exception {
+        User r1 = mockUser ("shouldCreateRetrieveDelete");
+        byte[] r1Json = util.toJson(r1);
 
-		User user = userService.createUser(testUserName);
+        //CREATE
+        MvcResult result = mvc.perform(post("/users")
+                .content(r1Json)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userName", is(r1.getUserName())))
+                .andReturn();
+        long id = util.getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
 
-		Mockito.verify(userDao, Mockito.times(1)).save(Mockito.any(User.class));
-		assertNotNull(user);
-		assertNotNull(user.getId());
-		assertEquals(testUserName, user.getUserName());
-	}
+        //RETRIEVE
+        mvc.perform(get("/users/" + id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is((int) id)))
+                .andExpect(jsonPath("$.userName", is(r1.getUserName())));
+                
+       
+        //DELETE
+        mvc.perform(delete("/users/" + id))
+                .andExpect(status().isOk());
 
-	@Test
-	public void updateUserTest() {
-		String updatedUserName = "updatedUserName";
-		User updatedUser = new User(updatedUserName);
-		updatedUser.setId(testUserId);
+        //RETRIEVE should fail
+        mvc.perform(get("/users/" + id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
 
-		Mockito.when(userDao.findOne(Mockito.anyLong())).thenReturn(testUser);
-		Mockito.when(userDao.save(updatedUser)).thenReturn(updatedUser);
+        //todo: you can test the 404 error body too.
 
-		User result = userService.updateUser(testUserId, updatedUserName);
+    }
+    
+    /*
+     ******************************
+      */
 
-		Mockito.verify(userDao, Mockito.times(1)).findOne(testUserId);
-		Mockito.verify(userDao, Mockito.times(1)).save(updatedUser);
-
-		assertNotNull(result);
-		assertEquals(testUserId, result.getId());
-		assertEquals(updatedUserName, result.getUserName());
-	}
+     private User mockUser(String prefix) {
+         User u = new User();
+         u.setUserName(prefix);
+         return u;
+     }
+    
 }

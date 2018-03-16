@@ -29,7 +29,7 @@ public class TodoList {
     @Column(nullable = false, length = 30)
     private String name;
     
-    protected TodoList() {}
+    public TodoList() {}
 
     public TodoList(String name, List<Task> tasks) {
         this.name = name;

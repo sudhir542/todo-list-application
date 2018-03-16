@@ -18,7 +18,7 @@ public class User {
     @Column(nullable = false, length = 30)
     private String userName;
 
-    protected User() {}
+    public User() {}//changed for testing
 
     public User(String userName) {
         this.userName = userName;
