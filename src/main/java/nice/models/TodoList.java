@@ -18,6 +18,10 @@ import javax.persistence.Table;
 
 import nice.models.Task;
 
+/*
+ * A simple domain entity todolists
+ */
+
 @Entity
 @Table(name = "todolists")
 public class TodoList {

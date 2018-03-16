@@ -9,6 +9,10 @@ import nice.models.UserDao;
 
 import java.util.List;
 
+/*
+ * Service that helps TodoApplication to do its thing
+ */
+
 @Service
 public class UserService {
 

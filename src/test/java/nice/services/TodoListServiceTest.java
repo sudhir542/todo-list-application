@@ -32,6 +32,11 @@ import nice.controllers.TodoListController;
 import nice.models.TodoList;
 import nice.models.Task;
 
+/*
+ * This Test file is used to test the services related to TodoList
+ * 
+ */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = TodoApplication.class)
 @ActiveProfiles("test")
@@ -115,7 +120,6 @@ public class TodoListServiceTest {
                 //be created based on the number of records existing in db
                 .andExpect(jsonPath("$.name", is(r1.getName())))
                 .andExpect(jsonPath("$.tasks[0].id",is((int)r1.getTasks().get(0).getId())))
-                //.andExpect(jsonPath("$.tasks",is(r1.getTasks())))
                 .andReturn();
         long id = util.getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
 
@@ -140,7 +144,6 @@ public class TodoListServiceTest {
     		List<Task> tasks = new ArrayList<Task>();
         Task t = new Task();
         t.setId(1);// use an existing task to add
-        //u.setUserName("John Deo");
         tasks.add(t);
         TodoList todoList = new TodoList();
         todoList.setName(prefix);

@@ -7,6 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/*
+ * A simple domain entity users
+ */
+
 @Entity
 @Table(name = "users")
 public class User {

@@ -8,8 +8,11 @@ import java.util.List;
 
 import nice.models.TodoListDao;
 import nice.models.TodoList;
-import nice.controllers.TaskRequest;
 import nice.models.Task;
+
+/*
+ * Service that helps TodoApplication to do its thing
+ */
 
 @Service
 public class TodoListService {

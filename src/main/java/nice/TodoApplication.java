@@ -5,6 +5,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+/*
+* This is the main Spring Boot application class. 
+* It configures Spring Boot, JPA, Swagger
+*/
+
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration

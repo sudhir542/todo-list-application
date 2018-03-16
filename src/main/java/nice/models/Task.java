@@ -1,6 +1,5 @@
 package nice.models;
 
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 
 import javax.persistence.Column;
@@ -10,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+/*
+ * A simple domain entity tasks
+ */
 
 @Entity
 @Table(name = "tasks")

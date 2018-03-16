@@ -12,6 +12,10 @@ import nice.models.TaskDao;
 import nice.models.User;
 import nice.models.UserDao;
 
+/*
+ * Service that helps TodoApplication to do its thing
+ */
+
 @Service
 public class TaskService {
 

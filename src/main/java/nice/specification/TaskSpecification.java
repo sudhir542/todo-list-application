@@ -10,14 +10,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /*
- * This OrderSpecification helps to implement Search Criteria in Tasks
+ * This TaskSpecification helps to implement Search Criteria in Tasks
  */
 
 public class TaskSpecification implements Specification<Task> {
     private SearchCriteria searchCriteria;
 
     /*
-     * Constructor for OrderSpecification
+     * Constructor for TaskSpecification
      */
     public TaskSpecification(SearchCriteria searchCriteria) {
         this.searchCriteria = searchCriteria;
