@@ -63,7 +63,9 @@ Response: HTTP 200
 POST
 http://localhost:8080/users
 request body:
-
+{
+  "userName": "Sam Arthur"
+}
 Response: HTTP 200
 ```
 ### Update a user
@@ -72,7 +74,9 @@ Response: HTTP 200
 PUT
 http://localhost:8080/users/{userId}
 request body:
-
+{
+  "userName": "Sam Arthur"
+}
 Response: HTTP 200
 ```
 
@@ -109,6 +113,14 @@ Response: HTTP 200
 POST
 http://localhost:8080/tasks
 Request body;
+{
+  "desc": "test task for testing",
+  "name": "test task",
+  "status": "Not Started,
+  "user": {
+    "id": 3
+  }
+}
 Response: HTTP 200
 ```
 
@@ -117,7 +129,16 @@ Response: HTTP 200
 ```
 PUT
 http://localhost:8080/tasks/{taskId}
+All fields are optional
 Request body:
+{
+  "desc": "test task for testing",
+  "name": "test task",
+  "status": "In Progress",
+  "user": {
+    "id": 3
+  }
+}
 Response: HTTP 200
 ```
 
@@ -177,6 +198,14 @@ Response: HTTP 200
 POST
 http://localhost:8080/todolists
 Request body
+{
+  "name": "test todolist",
+  "tasks": [
+    {
+      "id": 1
+  	}
+  ]
+}
 Response: HTTP 200
 ```
 
